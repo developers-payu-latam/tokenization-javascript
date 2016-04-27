@@ -1,0 +1,189 @@
+<html lang="en"><head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <style type="text/css">
+            .form-row {
+                
+                overflow: hidden;
+                padding:8px;
+                float:left;
+            }
+
+            label{font-family:amplesoft;color:#A6C307;font-size:12px;display:block;padding-bottom:3px;text-transform:capitalize;}
+            form{padding:0px 20px 20px 20px;}
+            #mylistID{float:right;width:80px;margin-left:10px;margin-top:-20px;font-family:arial;font-size:10px;}
+            input{border:#7b7b7b 1px solid;}
+            div.clear {
+                clear:both;
+            }
+            .clearfix:after {
+                content: ".";
+                display: block;
+                clear: both;
+                visibility: hidden;
+                line-height: 0;
+                height: 0;
+            }
+            
+            .cvc{width:120px;         
+             }
+             
+           input{padding:5px 0px 5px 0px;border:#a4a4a4 1px solid;}
+
+            .clearfix {
+                display: inline-block;
+            }
+
+            html[xmlns] .clearfix {
+                display: block;
+            }
+
+            * html .clearfix {
+                height: 1%;
+            }
+            
+            .expiracion{
+              width:130px;float:left;
+                
+            }
+            
+            .card{
+                width:200px;float:left;
+                
+            }
+            
+            .first_row{width:350px;             
+            }
+            
+            .documento{width:200px;float:left;}
+            
+            h1{margin-left:40px;color:#A6C307;background:url('http://developers.payulatam.com/images/icon/token-icon.png') no-repeat left;padding-left:120px;padding-top:0px;margin-bottom:5px;font-family:amplesoft;}
+            
+            .caja{border:solid 1px #bbb;background:#f7f7f7;border-radius:5px;width:400px;margin:30px auto 0px auto;}
+            
+            button{background:url('http://developers.payulatam.com/images/botones_js/GerarTokenJS(Pt).png') no-repeat;height:100px;width:250px;border:none;margin-left:20px;margin-top:20px;cursor:pointer;background-size: 150px auto;}
+         
+            
+         
+        </style>
+
+        <title>PAYU Exemplo</title>
+
+        <!-- lib payu.js -->
+        <!--script type="text/javascript" src="http://localhost:9093/ppp-web-gateway/javascript/PayU.js"></script--> 
+        <script type="text/javascript"  src="http://gateway.payulatam.com/ppp-web-gateway/javascript/PayU.js"></script> 
+
+        <!-- jQuery -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> <script type="text/javascript">
+		
+            payU.setURL('http://sandbox.api.payulatam.com/payments-api/4.0/service');
+            payU.setPublicKey("PKaC6H4cEDJD919n705L544kSU");
+			
+            payU.setAccountID("512321");
+            payU.setListBoxID("mylistID");
+            payU.setLanguage("es"); // optional
+            payU.getPaymentMethods();
+            
+		
+		
+            // function de respuesta
+            var responseHandler = function(response) {
+                var $form = $('#create-form');
+		 
+                if (response.error) {
+                    // Show the errors on the form
+                    $form.find('.create-errors').text(response.error);
+                    $form.find('button').prop('disabled', false);
+                } else {
+                    // token contains id, last4, and card type
+                    var token = response.token;
+                    alert(token);
+                    // Save the token ...k
+                    // ...
+                    // go somewhere
+                    // do something
+                    $form.find('button').prop('disabled', false);
+                }
+            };
+		
+            jQuery(function($) {
+                $('#create-form').submit(function(event) {
+                    var $form = $(this);
+
+                    // Disable the submit button to prevent repeated clicks
+                    $form.find('button').prop('disabled', true);
+
+                    payU.createToken(responseHandler, $form);
+
+                    // Prevent the form from submitting with the default action
+                    return false;
+                });
+            });
+
+		
+
+        </script>
+     
+    <body>
+
+        <!-- crea toquen con la funcion  setCardDetails  -->
+        
+
+
+
+        <div class="caja">
+        <h1>Javascript de tokenização</h1>
+        <form action="" method="POST" id="create-form" class="clearfix">
+             
+           
+
+            <div class="form-row first_row">
+                <div class="card">
+                <label> <span>Número do cartão de credito</span> 
+                             </label>
+                </div>
+                    <input type="text" size="30" payu-content="number" onkeyup="payU.validateCard(this.value);">
+                 <div id="mylistID" style=""></div>
+                
+                
+                
+            </div>
+              
+                <div class="form-row">
+                    <div class="expiracion">
+                <label>Expiração (MM/AAAA)</label> 
+                 <input type="text" size="2" payu-content="exp_month"><span> / </span>  <input type="text" size="4" payu-content="exp_year">
+            </div>
+                    <div class="documento">
+                <label>Documento</label>
+                   <input type="text" size="25" payu-content="document">
+                    </div>
+            </div>
+                     
+                 
+            <input payu-content="payer_id" value="MI PAYER ID" type="hidden">
+
+         
+
+            <div class="form-row">
+                <label> <span>Nome</span></label>
+                <input type="text" size="30" payu-content="name_card">
+            </div>
+            <div class="form-row">
+                 <label> <span>CVV</span> 
+                </label>
+                <input type="text" size="8" payu-content="cvc">
+                
+            </div>
+
+          
+             
+             <span class="form-row create-errors" style="color:red"></span>
+            <div class="clear"></div>
+            
+            <button type="submit" height:50px; width:50px;></button>
+            
+        </form>
+        </div>
+
+
+    </body></html>
