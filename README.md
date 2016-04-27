@@ -1,4 +1,4 @@
-<img src="http://www.payulatam.com/logos/logo.php?l=113&c=571fd87d49984" align="right" />
+<img src="PayU-Logo.png" align="right" />
 # Tokenization JavaScript
 
 
